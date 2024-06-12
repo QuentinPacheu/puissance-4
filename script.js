@@ -1,5 +1,4 @@
-
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const board = Array.from({ length: 6 }, () => Array(7).fill(null));
     let currentPlayer = 'player1';
     let currentCol = 0;
@@ -7,7 +6,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     const gameBoard = document.getElementById('game-board');
     const message = document.getElementById('message');
-    const notification = document.getElementById('notification');
     
     const createBoard = () => {
         for (let row = 0; row < 6; row++) {
@@ -124,41 +122,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         highlightColumn(currentCol);
     };
     
-    async function connectToGamepad() {
+    document.getElementById('connect').addEventListener('click', async () => {
         try {
-            const devices = await navigator.hid.getDevices();
+            const device = await navigator.hid.requestDevice({ filters: [] });
             
-            let gamepad = devices.find(device => device.productName === "MyESP32Gamepad");
-            
-            if (!gamepad) {
-                const selectedDevices = await navigator.hid.requestDevice({ filters: [] });
-                if (selectedDevices.length === 0) {
-                    console.log('No device selected.');
-                    return;
-                }
-                gamepad = selectedDevices[0];
+            if (device.length === 0) {
+                console.log('No device selected.');
+                return;
             }
             
-            await gamepad.open();
-            console.log('Connected to device:', gamepad.productName);
+            const selectedDevice = device[0];
+            await selectedDevice.open();
+            console.log('Connected to device:', selectedDevice.productName);
             
-            // Show notification
-            notification.style.display = 'block';
-            
-            gamepad.addEventListener('inputreport', event => {
+            selectedDevice.addEventListener('inputreport', event => {
                 handleHIDInput(event.data);
             });
             
         } catch (error) {
             console.error('Error:', error);
         }
-    }
+    });
     
     createBoard();
     highlightColumn(currentCol);
     document.addEventListener('keydown', handleKeyPress);
-    
-    // Attempt to connect to the gamepad on page load
-    connectToGamepad();
 });
-
