@@ -1,17 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
   margin: 0;
   padding: 0;
   height: 100vh;
   justify-content: center;
+  gap: 4rem;
+  background-color: #151515;
+  position: relative;
 }
 
 h1 {
-  margin-bottom: 20px;
+  font-size: 6rem;
+}
+
+.honk {
+  font-family: "Honk", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+  "MORF" 15,
+  "SHLN" 50;
 }
 
 #game-board {
@@ -19,6 +37,18 @@ h1 {
   grid-template-columns: repeat(7, 50px);
   grid-template-rows: repeat(6, 50px);
   gap: 5px;
+}
+
+#notification {
+  display: none;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: green;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 16px;
 }
 
 .cell {
@@ -49,4 +79,5 @@ h1 {
   margin-top: 20px;
   font-size: 24px;
   font-weight: bold;
+  color: #fff;
 }
